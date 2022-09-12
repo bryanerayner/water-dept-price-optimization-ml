@@ -1,4 +1,19 @@
 <h3>Edit Price Scheme</h3>
 
-<input type="number" [(ngModel)]="numberOfPriceBrackets"/>
-<mat-slider *ngFor="priceBracket of priceBrackets"></mat-slider>
+<div>
+    <h5>How many brackets?</h5>
+    <input type="number" [ngModel]="numberOfPriceBrackets"/>
+</div>
+<div *ngFor="priceBracket of priceBrackets">
+    <h4>{{priceBracket.min}} gallons to {{priceBracket.max}} gallons</h4>
+    <div>
+        <h5>Bracket starts at:</h5>
+        <input type="number" [ngModel]="priceBracket.min" />
+        <h5>Bracket ends at:</h5>
+        <input type="number" [ngModel]="priceBracket.max" />
+    </div>
+    <div>
+        <h5>Price per thousand gallons:</h5>
+        <input type="number" min="1" step="any" [ngModel]="priceBracket.pricePerThousand" />
+    </div>
+</div>
