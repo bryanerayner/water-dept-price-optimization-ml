@@ -1,4 +1,4 @@
-const categories: {
+export const categories: {
   [key: string]: {
     [key: string]: ReturnType<typeof gallonRange>[]
   };
@@ -7,7 +7,7 @@ const categories: {
   new: {},
 };
 
-const oldFlatRates: {
+export const oldFlatRates: {
     [key:string]: number;
 } = {
   insideResidential: 20,
@@ -16,7 +16,7 @@ const oldFlatRates: {
   outsideCommercial: 55,
 };
 
-const newMonthlyMeterFee: {
+export const newMonthlyMeterFee: {
     [key:string]: number;
 } = {
   '3/4': 25,
