@@ -1,3 +1,41 @@
+import _ from 'lodash';
+
+export class MultiPriceSchemeModel {
+  models = new Map<number, PriceSchemeModel>();
+
+  calculateRevenueForMonth(
+    customers: {
+      model: number,
+      category: string;
+      gallonsUsed: number;
+    }[]
+  ): number {
+    const customersByModel = _.groupBy(customers, 'model');
+    let total = 0;
+    for(let customer in customersByModel) {
+        const model = this.models.get(parseInt(customer + ''));
+        if (model) {
+            const next = model.calculateRevenueForMonth(customersByModel[customer]);
+            total+=next;
+        }
+    }
+    return total;
+  }
+
+  calculateRevenueByMonth(
+    customers: {
+      model: number,
+      category: string;
+      gallonsUsed: number;
+    }[][]
+  ) {
+    const revenueByMonth = customers.map((month) =>
+      this.calculateRevenueForMonth(month)
+    );
+
+    return revenueByMonth;
+  }
+}
 
 
 export class PriceSchemeModel {
@@ -8,7 +46,7 @@ export class PriceSchemeModel {
   }> = [];
 
   baseFees: {
-    [key: string]: number
+    [key: string]: number;
   } = {};
 
   calculatePrice(subunit: string, gallonsUsed: number): number {
@@ -41,5 +79,33 @@ export class PriceSchemeModel {
       }
     });
     return totalPrice;
+  }
+
+  calculateRevenueForMonth(
+    customers: {
+      category: string;
+      gallonsUsed: number;
+    }[]
+  ): number {
+    const total = customers.reduce((sum, nextCustomer) => {
+      const customerRevenue = this.calculatePrice(
+        nextCustomer.category,
+        nextCustomer.gallonsUsed
+      );
+
+      return sum + customerRevenue;
+    }, 0);
+    return total;
+  }
+
+  calculateRevenueByMonth(
+    customers: {
+      category: string;
+      gallonsUsed: number;
+    }[][]
+  ) {
+    const revenueByMonth = customers.map((month) => this.calculateRevenueForMonth(month));
+
+    return revenueByMonth;
   }
 }
