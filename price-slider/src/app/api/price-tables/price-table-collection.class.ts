@@ -28,7 +28,7 @@ export class PriceTableCollection {
   calculateRevenueByMonth(customers: CustomerDataset): {
     month: Date,
     revenue: number
-  } {
+  }[] {
     let minMonth: Date = new Date(2100, 1, 1);
     let maxMondh: Date = new Date(1800, 1, 1);
 
